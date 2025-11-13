@@ -16,7 +16,6 @@ The supernodal method is integrated into all scheduling phases of SubtreeLU, so 
 - C++17 compatible compiler
 - GLIBC 2.17 or higher
 - GLIBCXX 3.4.19 or higher
-- Intel MKL BLAS library (make sure the environment variable `LD_LIBRARY_PATH` points to the MKL library path)
 
 # Usage of the demo program
 
