@@ -6,46 +6,12 @@
 
 using namespace std;
 using namespace subtree_lu;
+using idx_t = int;
+using val_t = double;
 using VecI = vector<idx_t>;
 using VecV = vector<val_t>;
 
 enum RunType { FACT, REFACT, SOLVE };
-
-// parameter enums
-enum {
-    // input
-    I_PRUNE_DENSE,          // threshold for pruning dense rows
-    I_PIVTOL,               // pivoting tolerance in millionths
-    I_MAX_SUPERNODE_ROWS,   // maximum number of rows in a supernode
-    I_MIN_SUPERNODE_COLS,   // minimum number of columns in a supernode
-    I_INIT_SUPERNODE_ROWS,  // initial number of rows in a supernode
-    I_MEM_FACTOR,           // memory growth factor for supernode in percent
-
-    // output
-    O_ANALYZE_TIME,     // runtime for analysis in microseconds
-    O_FACTORIZE_TIME,   // runtime for factorization or refactorization in microseconds
-    O_SOLVE_TIME,       // runtime for solving in microseconds
-    O_NPIVOTS,          // number of off-diagonal pivots
-    O_LNNZ,             // number of non-zeros in L (including diagonal)
-    O_UNNZ,             // number of non-zeros in U (excluding diagonal)
-    O_NSUPERNODES,      // number of supernodes
-    O_NREALLOC,         // number of reallocations
-    O_FACTORIZE_FLOPS,  // FLOPs for factorization
-    O_SOLVE_FLOPS,      // FLOPs for solving
-    O_FACTORIZE_MEM,    // memory for factorization in bytes
-    O_SINGULAR_ROW,     // row index of singularity when E_SINGULAR
-};
-
-// error enums
-enum {
-    E_OK = 0,
-    E_BAD_ARG = -1,
-    E_OOM = -2,
-    E_SINGULAR = -3,
-    E_NOT_ANALYZED = -4,
-    E_NOT_FACTORIZED = -5,
-    E_UNKNOWN = -100,
-};
 
 VecV spmv(const VecI &ap, const VecI &ai, const VecV &ax, const VecV &x) {
     auto n = ap.size() - 1;
@@ -143,7 +109,7 @@ int main(int argc, char **argv) {
     int factorize_runs = 0, refactorize_runs = 0, solve_runs = 0;
 
     // create solver
-    SubtreeLUd solver;
+    SubtreeLU<idx_t, val_t> solver;
     solver.parm[I_PIVTOL] = static_cast<long long>(pivtol * 1e6);
 
     // analyze
